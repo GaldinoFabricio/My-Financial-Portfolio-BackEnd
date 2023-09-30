@@ -1,0 +1,67 @@
+generator client {
+   provider = "prisma-client-js"
+}
+
+datasource db {
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
+}
+
+model User {
+   id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name           String
+   email          String         @unique
+   password       String
+   created_at     DateTime       @default(now())
+   updated_at     DateTime       @updatedAt
+   access_history AccessHitory[]
+   user_bank      UserBank[]
+
+   @@map("users")
+}
+
+model AccessHitory {
+   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   user_id    String?  @db.Uuid
+   status     Boolean
+   created_at DateTime @default(now())
+   User       User?    @relation(fields: [user_id], references: [id])
+
+   @@map("access_historie")
+}
+
+model Bank {
+   id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name       String
+   created_at DateTime   @default(now())
+   user_bank  UserBank[]
+
+   @@map("banks")
+}
+
+model UserBank {
+   id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   user_id    String       @db.Uuid
+   bank_id    String       @db.Uuid
+   created_at DateTime     @default(now())
+   updated_at DateTime     @updatedAt
+   bank       Bank         @relation(fields: [bank_id], references: [id])
+   user       User         @relation(fields: [user_id], references: [id])
+   Investment Investment[]
+
+   @@map("users_banks")
+}
+
+model Investment {
+   id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   transaction_date   DateTime
+   asset_name         String
+   assetType          String
+   initial_investment Decimal
+   current_value      Decimal
+   user_bank_id       String   @db.Uuid
+   created_at         DateTime @default(now())
+   user_bank          UserBank @relation(fields: [user_bank_id], references: [id])
+
+   @@map("investiments")
+}
