@@ -7,6 +7,10 @@ declare global {
 				id: string;
 				role_id: string;
 			};
+
+			roles: {
+				name: string;
+			};
 		}
 	}
 }

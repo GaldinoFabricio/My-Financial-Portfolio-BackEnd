@@ -4,9 +4,15 @@ import { IListUserIdGroupRoleDTO } from "../dto/groupRole/IListUserIdGroupRoleDT
 import { IUpdateGroupRoleDTO } from "../dto/groupRole/IUpdateGroupRoleDTO";
 import { ICreateGroupRoleDTO } from "../dto/groupRole/ICreateGroupRoleDTO";
 import { IListIdGroupRoleDTO } from "../dto/groupRole/IListIdGroupRoleDTO";
+import { ICheckUserRoleGroupDTO } from "../dto/groupRole/ICheckUserRoleGroupRole";
 
 interface IGroupRoleRepository {
 	create(data: ICreateGroupRoleDTO): Promise<void>;
+
+	checkUserRole({
+		role_id,
+		user_id,
+	}: ICheckUserRoleGroupDTO): Promise<{ role: { name: string } } | null>;
 
 	list(): Promise<GroupRole[]>;
 

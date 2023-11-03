@@ -6,10 +6,30 @@ import { IListIdGroupRoleDTO } from "../../dto/groupRole/IListIdGroupRoleDTO";
 import { IListRoleIdGroupRoleDTO } from "../../dto/groupRole/IListRoleIdGroupRoleDTO";
 import { IListUserIdGroupRoleDTO } from "../../dto/groupRole/IListUserIdGroupRoleDTO";
 import { IUpdateGroupRoleDTO } from "../../dto/groupRole/IUpdateGroupRoleDTO";
+import { ICheckUserRoleGroupDTO } from "../../dto/groupRole/ICheckUserRoleGroupRole";
 
 class GroupRoleRepository implements IGroupRoleRepository {
 	async create(data: ICreateGroupRoleDTO): Promise<void> {
 		await prismaClient.groupRole.create({ data });
+	}
+
+	async checkUserRole({
+		role_id,
+		user_id,
+	}: ICheckUserRoleGroupDTO): Promise<{ role: { name: string } } | null> {
+		return await prismaClient.groupRole.findFirst({
+			where: {
+				role_id,
+				user_id,
+			},
+			select: {
+				role: {
+					select: {
+						name: true,
+					},
+				},
+			},
+		});
 	}
 
 	async list(): Promise<GroupRole[]> {

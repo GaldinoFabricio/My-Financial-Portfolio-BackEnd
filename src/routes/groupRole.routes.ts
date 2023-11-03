@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { CreateGroupRoleController } from "../modules/role/useCase/groupRole/create/CreateGroupRoleController";
 import { ListGroupRoleController } from "../modules/role/useCase/groupRole/list/ListGroupRoleController";
 import { ListRoleIdGroupRoleController } from "../modules/role/useCase/groupRole/listRoleId/ListRoleIdGroupRoleController";
@@ -6,6 +6,7 @@ import { ListUserIdGroupRoleController } from "../modules/role/useCase/groupRole
 import { UpdateGroupRoleController } from "../modules/role/useCase/groupRole/update/UpdateGroupRoleController";
 import { Joi, Segments, celebrate } from "celebrate";
 import { ensureAuthenticate } from "../middleware/ensureAuthenticate";
+import { ensureRoleAuthenticate } from "../middleware/ensureRoleAuthentitcate";
 
 const groupRoleRoutes = Router();
 
@@ -15,10 +16,21 @@ const listRoleIdGroupRoleController = new ListRoleIdGroupRoleController();
 const listUserIdGroupRoleController = new ListUserIdGroupRoleController();
 const updateGroupRoleController = new UpdateGroupRoleController();
 
+groupRoleRoutes.use(
+	(request: Request, response: Response, next: NextFunction) => {
+		request.roles = {
+			name: "administration",
+		};
+
+		next();
+	}
+);
+
 groupRoleRoutes.use(ensureAuthenticate);
 
 groupRoleRoutes.post(
 	"/",
+	ensureRoleAuthenticate,
 	celebrate(
 		{
 			[Segments.BODY]: Joi.object().keys({
@@ -35,6 +47,7 @@ groupRoleRoutes.post(
 
 groupRoleRoutes.get(
 	"/role/:role_id",
+	ensureRoleAuthenticate,
 	celebrate(
 		{
 			[Segments.PARAMS]: Joi.object().keys({
@@ -50,6 +63,7 @@ groupRoleRoutes.get(
 
 groupRoleRoutes.get(
 	"/user/:user_id",
+	ensureRoleAuthenticate,
 	celebrate(
 		{
 			[Segments.PARAMS]: Joi.object().keys({
@@ -67,6 +81,7 @@ groupRoleRoutes.get("/", listGroupRoleController.handle);
 
 groupRoleRoutes.put(
 	"/",
+	ensureRoleAuthenticate,
 	celebrate(
 		{
 			[Segments.BODY]: Joi.object().keys({
