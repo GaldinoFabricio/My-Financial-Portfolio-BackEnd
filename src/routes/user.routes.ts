@@ -1,16 +1,21 @@
 import { Router } from "express";
 import { CreateUserController } from "../modules/user/useCase/create/CreateUserController";
-import { ListIdUserController } from "../modules/user/useCase/listID/ListIdUserController";
+import { ListIdUserController } from "../modules/user/useCase/listId/ListIdUserController";
 import { UpdateUserController } from "../modules/user/useCase/update/UpdateUserController";
 import { UpdatePasswordUserController } from "../modules/user/useCase/updatePassword/updatePasswordUserController";
 import { Joi, Segments, celebrate } from "celebrate";
+import { ensureAuthenticate } from "../middleware/ensureAuthenticate";
+import { ListMyUserController } from "../modules/user/useCase/listMy/ListMyUserController";
 
 const userRoutes = Router();
 
 const createUserController = new CreateUserController();
 const listIdUserController = new ListIdUserController();
+const listMyUserController = new ListMyUserController();
 const updateUserController = new UpdateUserController();
 const updatePasswordUserController = new UpdatePasswordUserController();
+
+userRoutes.use(ensureAuthenticate);
 
 userRoutes.post(
 	"/",
@@ -29,8 +34,10 @@ userRoutes.post(
 	createUserController.handle
 );
 
+userRoutes.get("/my", listMyUserController.handle);
+
 userRoutes.get(
-	"/:id",
+	"/id/:id",
 	celebrate(
 		{
 			[Segments.PARAMS]: Joi.object().keys({

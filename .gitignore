@@ -1,3 +1,16 @@
 node_modules
 .env
 .editorconfig
+
+prisma/migrations
+
+yarn.lock
+
+dist
+
+logs
+
+yarn error.log
+
+yarn.lock
+

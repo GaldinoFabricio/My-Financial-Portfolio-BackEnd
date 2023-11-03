@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-   id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   name           String
-   email          String         @unique
-   password       String
-   created_at     DateTime       @default(now())
-   updated_at     DateTime       @updatedAt
-   access_history AccessHitory[]
-   user_bank      UserBank[]
+   id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name              String
+   email             String             @unique
+   password          String
+   created_at        DateTime           @default(now())
+   updated_at        DateTime           @updatedAt
+   access_history    AccessHitory[]
+   user_bank         UserBank[]
+   recommended_stock RecommendedStock[]
+   group_role        GroupRole?
 
    @@map("users")
 }
@@ -53,15 +55,77 @@ model UserBank {
 }
 
 model Investment {
-   id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   transaction_date   DateTime
-   asset_name         String
-   assetType          String
-   initial_investment Decimal
-   current_value      Decimal
-   user_bank_id       String   @db.Uuid
-   created_at         DateTime @default(now())
-   user_bank          UserBank @relation(fields: [user_bank_id], references: [id])
+   id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   transaction_date DateTime
+   asset_name       String
+   asset_type       String
+   amount           Int
+   price            Decimal
+   user_bank_id     String   @db.Uuid
+   created_at       DateTime @default(now())
+   user_bank        UserBank @relation(fields: [user_bank_id], references: [id])
 
    @@map("investiments")
+}
+
+model stock {
+   id            String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   Papel         String
+   Cotacao       Decimal
+   PL            Decimal
+   PV            Decimal
+   PSR           Decimal
+   DivYield      Decimal
+   PAtivo        Decimal
+   PCapGiro      Decimal
+   PEBIT         Decimal
+   PAtivCircLiq  Decimal
+   EVEBIT        Decimal
+   EVEBITDA      Decimal
+   MrgEbit       Decimal
+   MrgLiq        Decimal
+   LiqCorr       Decimal
+   ROIC          Decimal
+   ROE           Decimal
+   Liq2meses     Decimal
+   PatrimLiq     Decimal
+   DivBrutPatrim Decimal
+   CrescRec5a    Decimal
+   created_at    DateTime           @default(now())
+   stock         RecommendedStock[]
+
+   @@map("stocks")
+}
+
+model RecommendedStock {
+   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   stock_id      String   @db.Uuid
+   user_id       String   @db.Uuid
+   justification String   @db.Text
+   created_at    DateTime @default(now())
+   stock         stock    @relation(fields: [stock_id], references: [id])
+   user          User     @relation(fields: [user_id], references: [id])
+
+   @@map("recommeded_stock")
+}
+
+model Role {
+   id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name       String
+   created_at DateTime    @default(now())
+   GroupRole  GroupRole[]
+
+   @@map("roles")
+}
+
+model GroupRole {
+   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   role_id    String   @db.Uuid
+   user_id    String   @unique @db.Uuid
+   created_at DateTime @default(now())
+   updated_at DateTime @default(now()) @updatedAt
+   role       Role     @relation(fields: [role_id], references: [id])
+   user       User     @relation(fields: [user_id], references: [id])
+
+   @@map("group_roles")
 }

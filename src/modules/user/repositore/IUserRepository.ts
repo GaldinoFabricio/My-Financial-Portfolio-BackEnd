@@ -8,7 +8,7 @@ import { IListEmailUserDTO } from "../dto/IListEmailUserDTO";
 interface IUserRepository {
 	create(data: ICreateUserDTO): Promise<void>;
 
-	listId({ id }: IListIdUserDTO): Promise<{ id: string } | null>;
+	listId({ id }: IListIdUserDTO): Promise<User | null>;
 
 	listEmail({ email }: IListEmailUserDTO): Promise<User | null>;
 

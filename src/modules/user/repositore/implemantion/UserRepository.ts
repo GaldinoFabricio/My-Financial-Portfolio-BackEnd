@@ -13,13 +13,10 @@ class UserRepository implements IUserRepository {
 		await prismaClient.user.create({ data });
 	}
 
-	async listId({ id }: IListIdUserDTO): Promise<{ id: string } | null> {
+	async listId({ id }: IListIdUserDTO): Promise<User | null> {
 		return await prismaClient.user.findFirst({
 			where: {
 				id,
-			},
-			select: {
-				id: true,
 			},
 		});
 	}

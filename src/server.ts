@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
 import { errors, isCelebrateError } from "celebrate";
 import "reflect-metadata";
 import "express-async-errors";
@@ -7,12 +8,18 @@ import { routes } from "./routes/index.routes";
 import "./database";
 import "./shared/container";
 import AppError from "./shared/errors/AppErrors";
+import Logger from "./shared/logger/Logger";
+import morganMiddleware from "./config/morganMidlware";
 
 const PORT = 3333;
 
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
+
+app.use(morganMiddleware);
 
 app.use(routes);
 

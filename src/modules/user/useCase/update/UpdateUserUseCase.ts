@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { IUserRepositorie } from "../../repositore/IUserRepository";
+import { IUserRepository } from "../../repositore/IUserRepository";
 import { IUpdateUserDTO } from "../../dto/IUpdateUserDTO";
 import { User } from "@prisma/client";
 
@@ -7,7 +7,7 @@ import { User } from "@prisma/client";
 class UpdateUserUseCase {
 	constructor(
 		@inject("UserRepository")
-		private userRepository: IUserRepositorie
+		private userRepository: IUserRepository
 	) {}
 
 	async execute(data: IUpdateUserDTO): Promise<User> {
