@@ -1,5 +1,5 @@
-interface IListUserIdGroupRole {
+interface IListUserIdGroupRoleDTO {
 	user_id: string;
 }
 
-export { IListUserIdGroupRole };
+export { IListUserIdGroupRoleDTO };

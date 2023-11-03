@@ -1,10 +1,22 @@
 import { GroupRole } from "@prisma/client";
-import { ICreateRoleDTO } from "../dto/role/ICreateRoleDTO";
+import { IListRoleIdGroupRoleDTO } from "../dto/groupRole/IListRoleIdGroupRoleDTO";
+import { IListUserIdGroupRoleDTO } from "../dto/groupRole/IListUserIdGroupRoleDTO";
+import { IUpdateGroupRoleDTO } from "../dto/groupRole/IUpdateGroupRoleDTO";
+import { ICreateGroupRoleDTO } from "../dto/groupRole/ICreateGroupRoleDTO";
+import { IListIdGroupRoleDTO } from "../dto/groupRole/IListIdGroupRoleDTO";
 
 interface IGroupRoleRepository {
-	create(data: ICreateRoleDTO): Promise<void>;
+	create(data: ICreateGroupRoleDTO): Promise<void>;
 
 	list(): Promise<GroupRole[]>;
 
-	listId(): Promise<GroupRole | null>;
+	listId({ id }: IListIdGroupRoleDTO): Promise<GroupRole | null>;
+
+	listRoleId({ role_id }: IListRoleIdGroupRoleDTO): Promise<GroupRole[]>;
+
+	listUserId({ user_id }: IListUserIdGroupRoleDTO): Promise<GroupRole | null>;
+
+	update({ id, role_id, user_id }: IUpdateGroupRoleDTO): Promise<GroupRole>;
 }
+
+export { IGroupRoleRepository };
