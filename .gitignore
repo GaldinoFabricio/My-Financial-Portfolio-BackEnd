@@ -10,7 +10,3 @@ dist
 
 logs
 
-yarn error.log
-
-yarn.lock
-
