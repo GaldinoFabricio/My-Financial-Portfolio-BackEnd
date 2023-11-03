@@ -13,6 +13,8 @@ import { IRecommededStockRepository } from "../../modules/stock/repositorie/IRec
 import { RecommendedStockRepository } from "../../modules/stock/repositorie/implemantion/RecommededStockRepository";
 import { IGroupRoleRepository } from "../../modules/role/repositorie/IGroupRoleRepository";
 import { GroupRoleRepository } from "../../modules/role/repositorie/implemantion/GroupRoleRepository";
+import { IRoleRepository } from "../../modules/role/repositorie/IRoleRepository";
+import { RoleRepository } from "../../modules/role/repositorie/implemantion/RoleRepository";
 
 container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
 
@@ -37,6 +39,8 @@ container.registerSingleton<IRecommededStockRepository>(
 	"RecommededStockRepository",
 	RecommendedStockRepository
 );
+
+container.registerSingleton<IRoleRepository>("RoleRepository", RoleRepository);
 
 container.registerSingleton<IGroupRoleRepository>(
 	"GroupRoleRepository",
