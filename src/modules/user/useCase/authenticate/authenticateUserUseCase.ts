@@ -5,6 +5,7 @@ import AppError from "../../../../shared/errors/AppErrors";
 import { compare } from "bcrypt";
 import { IUserRepository } from "../../repositore/IUserRepository";
 import PasswordValidator from "password-validator";
+import Logger from "../../../../shared/logger/Logger";
 
 interface IReponse {
 	token: string;
@@ -45,17 +46,18 @@ class AuthenticateUserUseCase {
 
 		const verifyUser = await this.userRepository.listEmail({ email });
 		if (!verifyUser) {
+			Logger.warn(`tried to access using email: ${email}`);
 			throw new AppError("Email or password incorrect", 401);
 		}
 
 		const passwordMatch = await compare(password, verifyUser.password);
 
 		if (!passwordMatch) {
+			Logger.warn(`password does not match password: ${password}`);
 			throw new AppError("Email or password incorrect", 401);
 		}
 
 		const generateTokenProvider = new GenerateTokenProvider();
-
 		const token = await generateTokenProvider.execute(verifyUser.id);
 
 		const tokenReturn = {
