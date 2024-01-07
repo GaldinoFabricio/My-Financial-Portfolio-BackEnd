@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-   id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   name              String
-   email             String             @unique
-   password          String
-   created_at        DateTime           @default(now())
-   updated_at        DateTime           @updatedAt
-   access_history    AccessHitory[]
-   user_bank         UserBank[]
-   recommended_stock RecommendedStock[]
-   group_role        GroupRole?
+   id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name                 String
+   email                String                 @unique
+   password             String
+   created_at           DateTime               @default(now())
+   updated_at           DateTime               @updatedAt
+   access_history       AccessHitory[]
+   user_bank            UserBank[]
+   recommended_stock    RecommendedStock[]
+   group_role           GroupRole?
+   ExpenseCategoryTable ExpenseCategoryTable[]
 
    @@map("users")
 }
@@ -35,21 +36,24 @@ model AccessHitory {
 model Bank {
    id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
    name       String
+   deleted    Boolean?
    created_at DateTime   @default(now())
+   deleted_at DateTime?
    user_bank  UserBank[]
 
    @@map("banks")
 }
 
 model UserBank {
-   id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   user_id    String       @db.Uuid
-   bank_id    String       @db.Uuid
-   created_at DateTime     @default(now())
-   updated_at DateTime     @updatedAt
-   bank       Bank         @relation(fields: [bank_id], references: [id])
-   user       User         @relation(fields: [user_id], references: [id])
-   Investment Investment[]
+   id                          String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   user_id                     String                        @db.Uuid
+   bank_id                     String                        @db.Uuid
+   created_at                  DateTime                      @default(now())
+   updated_at                  DateTime                      @updatedAt
+   bank                        Bank                          @relation(fields: [bank_id], references: [id])
+   user                        User                          @relation(fields: [user_id], references: [id])
+   Investment                  Investment[]
+   MonthlyCombinedCardExpenses MonthlyCombinedCardExpenses[]
 
    @@map("users_banks")
 }
@@ -112,20 +116,70 @@ model RecommendedStock {
 model Role {
    id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
    name       String
+   deleted    Boolean     @default(false)
    created_at DateTime    @default(now())
+   deleted_at DateTime?
    GroupRole  GroupRole[]
 
    @@map("roles")
 }
 
 model GroupRole {
-   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   role_id    String   @db.Uuid
-   user_id    String   @unique @db.Uuid
-   created_at DateTime @default(now())
-   updated_at DateTime @default(now()) @updatedAt
-   role       Role     @relation(fields: [role_id], references: [id])
-   user       User     @relation(fields: [user_id], references: [id])
+   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   role_id    String    @db.Uuid
+   user_id    String    @unique @db.Uuid
+   deleted    Boolean   @default(false)
+   created_at DateTime  @default(now())
+   updated_at DateTime  @default(now()) @updatedAt
+   deleted_at DateTime?
+   role       Role      @relation(fields: [role_id], references: [id])
+   user       User      @relation(fields: [user_id], references: [id])
 
    @@map("group_roles")
+}
+
+model Category {
+   id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name                 String
+   deleted              Boolean?
+   created_at           DateTime               @default(now())
+   updated_at           DateTime               @updatedAt
+   deleted_at           DateTime?
+   ExpenseCategoryTable ExpenseCategoryTable[]
+
+   @@map("categories")
+}
+
+model ExpenseCategoryTable {
+   id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   category_id     String    @db.Uuid
+   user_id         String    @db.Uuid
+   monthly_budget  Decimal
+   month           String
+   monthly_expense Decimal?
+   payment_date    DateTime?
+   deleted         Boolean?
+   created_at      DateTime  @default(now())
+   updated_at      DateTime  @updatedAt
+   deleted_at      DateTime?
+   category        Category  @relation(fields: [category_id], references: [id], onDelete: Cascade)
+   user            User      @relation(fields: [user_id], references: [id])
+
+   @@map("expenses_categories_table")
+}
+
+model MonthlyCombinedCardExpenses {
+   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   user_bank_id String    @db.Uuid
+   description  String
+   card_type    String
+   date_expense DateTime
+   value        Decimal
+   deleted      Boolean?
+   created_at   DateTime  @default(now())
+   updated_at   DateTime  @updatedAt
+   deleted_at   DateTime?
+   user_bank    UserBank  @relation(fields: [user_bank_id], references: [id], onDelete: Cascade)
+
+   @@map("monthly_combined_card_expenses")
 }

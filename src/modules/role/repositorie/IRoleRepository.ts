@@ -1,16 +1,25 @@
 import { Role } from "@prisma/client";
-import { IListIdRoleDTO } from "../dto/role/IListIdRoleDTO";
-import { IUpdateRoleDTO } from "../dto/role/IUpdateRoleDTO";
-import { ICreateRoleDTO } from "../dto/role/ICreateRoleDTO";
+import { IFindIdRoleDTO } from "../dto/IFindIdRoleDTO";
+import { IUpdateRoleDTO } from "../dto/IUpdateRoleDTO";
+import { ICreateRoleDTO } from "../dto/ICreateRoleDTO";
+import { IDeleteRoleDTO } from "../dto/IDeleteRoleDTO";
+import { IFindNameRoleDTO } from "../dto/IFindNameRoleDTO";
+import { ILogicalDeleteRoleDTO } from "../dto/ILogicalDeleteRoleDTO";
 
 interface IRoleRepository {
-	create(data: ICreateRoleDTO): Promise<void>;
+   create(data: ICreateRoleDTO): Promise<Role>;
 
-	list(): Promise<Role[]>;
+   delete(input: IDeleteRoleDTO): Promise<void>;
 
-	listId({ id }: IListIdRoleDTO): Promise<Role | null>;
+   findAll(): Promise<Role[]>;
 
-	update({ id, name }: IUpdateRoleDTO): Promise<Role>;
+   findId({ id }: IFindIdRoleDTO): Promise<Role | null>;
+
+   findName(input: IFindNameRoleDTO): Promise<Role[]>;
+
+   logicalDelete(input: ILogicalDeleteRoleDTO): Promise<Role>;
+
+   update({ id, name }: IUpdateRoleDTO): Promise<Role>;
 }
 
 export { IRoleRepository };

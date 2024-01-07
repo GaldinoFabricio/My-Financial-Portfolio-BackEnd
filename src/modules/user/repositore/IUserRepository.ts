@@ -1,20 +1,20 @@
 import { User } from "@prisma/client";
 import { ICreateUserDTO } from "../dto/ICreateUserDTO";
-import { IListIdUserDTO } from "../dto/IListIdUserDTO";
+import { IFindIdUserDTO } from "../dto/IFindIdUserDTO";
 import { IUpdateUserDTO } from "../dto/IUpdateUserDTO";
 import { IUpdatePasswordUserDTO } from "../dto/IUpdatePasswordUserDTO";
-import { IListEmailUserDTO } from "../dto/IListEmailUserDTO";
+import { IFindEmailUserDTO } from "../dto/IFindEmailUserDTO";
 
 interface IUserRepository {
-	create(data: ICreateUserDTO): Promise<void>;
+   create(data: ICreateUserDTO): Promise<void>;
 
-	listId({ id }: IListIdUserDTO): Promise<User | null>;
+   findId({ id }: IFindIdUserDTO): Promise<User | null>;
 
-	listEmail({ email }: IListEmailUserDTO): Promise<User | null>;
+   findEmail({ email }: IFindEmailUserDTO): Promise<User | null>;
 
-	update(data: IUpdateUserDTO): Promise<User>;
+   update(data: IUpdateUserDTO): Promise<User>;
 
-	updatePassword({ id, password }: IUpdatePasswordUserDTO): Promise<User>;
+   updatePassword({ id, password }: IUpdatePasswordUserDTO): Promise<User>;
 }
 
 export { IUserRepository };

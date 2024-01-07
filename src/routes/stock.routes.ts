@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { FundamentusController } from "../modules/stock/useCase/scraper/FundamentusController";
-import { ListStockController } from "../modules/stock/useCase/stock/list/ListStockController";
+import { ListStockController } from "../modules/stock/useCase/list/ListStockController";
 
 const stockRoutes = Router();
 

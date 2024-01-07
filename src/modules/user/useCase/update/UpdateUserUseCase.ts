@@ -5,16 +5,14 @@ import { User } from "@prisma/client";
 
 @injectable()
 class UpdateUserUseCase {
-	constructor(
-		@inject("UserRepository")
-		private userRepository: IUserRepository
-	) {}
+   constructor(
+      @inject("UserRepository")
+      private userRepository: IUserRepository
+   ) {}
 
-	async execute(data: IUpdateUserDTO): Promise<User> {
-		const resp = await this.userRepository.update(data);
-
-		return resp;
-	}
+   async execute(data: IUpdateUserDTO): Promise<User> {
+      return await this.userRepository.update(data);
+   }
 }
 
 export { UpdateUserUseCase };

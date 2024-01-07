@@ -1,16 +1,22 @@
 import { Bank } from "@prisma/client";
-import { ICreateBankDTO } from "../dto/bank/ICreateBankDTO";
-import { IListIdBankDTO } from "../dto/bank/IListIdBankDTO";
-import { IUpdateBankDTO } from "../dto/bank/IUpdateBankDTO";
+import { ICreateBankDTO } from "../dto/ICreateBankDTO";
+import { IListIdBankDTO } from "../dto/IListIdBankDTO";
+import { IUpdateBankDTO } from "../dto/IUpdateBankDTO";
+import { ILogicalDeleteBankDTO } from "../dto/ILogicalDeleteBankDTO";
+import { IDeleteBankDTO } from "../dto/IDeleteBankDTO";
 
 interface IBankRepository {
-	create(data: ICreateBankDTO): Promise<void>;
+   create(input: ICreateBankDTO): Promise<Bank>;
 
-	list(): Promise<Bank[]>;
+   delete(input: IDeleteBankDTO): Promise<void>;
 
-	listId({ id }: IListIdBankDTO): Promise<Bank | null>;
+   list(): Promise<Bank[]>;
 
-	update({ id, name }: IUpdateBankDTO): Promise<Bank>;
+   listId({ id }: IListIdBankDTO): Promise<Bank | null>;
+
+   logicalDelete(input: ILogicalDeleteBankDTO): Promise<Bank>;
+
+   update({ id, name }: IUpdateBankDTO): Promise<Bank>;
 }
 
 export { IBankRepository };
