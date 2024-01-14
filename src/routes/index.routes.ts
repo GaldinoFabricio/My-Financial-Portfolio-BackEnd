@@ -6,10 +6,11 @@ import { authenticateRoutes } from "./authenticate.routes";
 import { investmentRoutes } from "./investment.routes";
 import { stockRoutes } from "./stock.routes";
 import { recommededStockRoutes } from "./recommededStock.routes";
-import { expenseCategoryTableRoutes } from "./expenseCategoryTable.routes";
+import { expenseCategoryTableRoutes } from "./fixedExpense.routes";
 import { categoryRoutes } from "./category.routes";
 import { bankRoutes } from "./bank.routes";
 import { roleRoutes } from "./role.routes";
+import { incomesRoutes } from "./incomes.routes";
 
 const routes = Router();
 
@@ -21,6 +22,7 @@ routes.use("/recommeded-stock", recommededStockRoutes);
 routes.use("/expense", expenseCategoryTableRoutes);
 routes.use("/category", categoryRoutes);
 routes.use("/role", roleRoutes);
+routes.use("/incomes", incomesRoutes);
 routes.use(authenticateRoutes);
 
 export { routes };

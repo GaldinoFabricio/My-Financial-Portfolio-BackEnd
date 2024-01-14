@@ -13,12 +13,14 @@ import { IRecommededStockRepository } from "../../modules/recommendedStock/repos
 import { RecommendedStockRepository } from "../../modules/recommendedStock/repositories/implemention/RecommededStockRepository";
 import { ICategoryRepository } from "../../modules/category/repositories/ICategoryRepository";
 import { CategoryRepository } from "../../modules/category/repositories/implemantion/CategoryRepository";
-import { IExpenseCategoryTableRepository } from "../../modules/expenseCategoryTable/repositores/IExpenseCategoryTableRepository";
-import { ExpenseCategoryTableRepository } from "../../modules/expenseCategoryTable/repositores/implemantion/ExpenseCategoryTableRepository";
-import { IMonthlyCombinedCardExpensesRepository } from "../../modules/monthlyCombinedCardExpenses/repositorie/IMonthlyCombinedCardExpensesRepository";
-import { MonthlyCombinedCardExpensesRepository } from "../../modules/monthlyCombinedCardExpenses/repositorie/implemantions/MonthlyCombinedCardExpensesRepository";
 import { IRoleRepository } from "../../modules/role/repositorie/IRoleRepository";
 import { RoleRepository } from "../../modules/role/repositorie/implemantion/RoleRepository";
+import { ICardExpensesRepository } from "../../modules/cardExpense/repositorie/ICardExpensesRepository";
+import { CardExpensesRepository } from "../../modules/cardExpense/repositorie/implemantions/CardExpensesRepository";
+import { IFixedExpenseRepository } from "../../modules/fixedExpense/repositores/IFixedExpenseRepository";
+import { FixedExpenseRepository } from "../../modules/fixedExpense/repositores/implemantion/FixedExpenseRepository";
+import { IIncomesRepository } from "../../modules/incomes/repositories/IIncomesRepository";
+import { IncomesRepository } from "../../modules/incomes/repositories/implemantion/IncomesRepository";
 
 container.registerSingleton<IUserRepository>("UserRepository", UserRepository);
 
@@ -49,14 +51,19 @@ container.registerSingleton<ICategoryRepository>(
    CategoryRepository
 );
 
-container.registerSingleton<IExpenseCategoryTableRepository>(
-   "ExpenseCategoryTableRepository",
-   ExpenseCategoryTableRepository
+container.registerSingleton<IFixedExpenseRepository>(
+   "FixedExpenseRepository",
+   FixedExpenseRepository
 );
 
-container.registerSingleton<IMonthlyCombinedCardExpensesRepository>(
-   "MonthlyCombinedCardExpensesRepository",
-   MonthlyCombinedCardExpensesRepository
+container.registerSingleton<ICardExpensesRepository>(
+   "CardExpensesRepository",
+   CardExpensesRepository
 );
 
 container.registerSingleton<IRoleRepository>("RoleRepository", RoleRepository);
+
+container.registerSingleton<IIncomesRepository>(
+   "IncomesRepository",
+   IncomesRepository
+);
