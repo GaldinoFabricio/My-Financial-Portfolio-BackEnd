@@ -15,10 +15,10 @@ model User {
    created_at        DateTime           @default(now())
    updated_at        DateTime           @updatedAt
    access_history    AccessHitory[]
-   user_bank         UserBank[]
+   //user_bank         UserBank[]
    recommended_stock RecommendedStock[]
    group_role        GroupRole?
-   fixedExpenses     FixedExpenses[]
+   Expenses          Expenses[]
 
    @@map("users")
 }
@@ -33,31 +33,30 @@ model AccessHitory {
    @@map("access_historie")
 }
 
-model Bank {
-   id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   name         String
-   deleted      Boolean?
-   created_at   DateTime       @default(now())
-   deleted_at   DateTime?
-   user_bank    UserBank[]
-   Investment   Investment[]
-   CardExpenses CardExpenses[]
-   Incomes      Incomes[]
+//model Bank {
+//   id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   name       String
+//   deleted    Boolean?
+//   created_at DateTime     @default(now())
+//   deleted_at DateTime?
+//   user_bank  UserBank[]
+//   Investment Investment[]
+//   Expenses   Expenses[]
 
-   @@map("banks")
-}
+//   @@map("banks")
+//}
 
-model UserBank {
-   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   user_id    String   @db.Uuid
-   bank_id    String   @db.Uuid
-   created_at DateTime @default(now())
-   updated_at DateTime @updatedAt
-   bank       Bank     @relation(fields: [bank_id], references: [id])
-   user       User     @relation(fields: [user_id], references: [id])
+//model UserBank {
+//   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   user_id    String   @db.Uuid
+//   bank_id    String   @db.Uuid
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   bank       Bank     @relation(fields: [bank_id], references: [id])
+//   user       User     @relation(fields: [user_id], references: [id])
 
-   @@map("users_banks")
-}
+//   @@map("users_banks")
+//}
 
 model Investment {
    id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -66,9 +65,9 @@ model Investment {
    asset_type       String
    amount           Int
    price            Decimal
-   bank_id          String   @db.Uuid
+   //bank_id          String   @db.Uuid
    created_at       DateTime @default(now())
-   bank             Bank     @relation(fields: [bank_id], references: [id])
+   //bank             Bank     @relation(fields: [bank_id], references: [id])
 
    @@map("investiments")
 }
@@ -140,62 +139,57 @@ model GroupRole {
 }
 
 model Category {
-   id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   name          String
-   deleted       Boolean?
-   created_at    DateTime        @default(now())
-   updated_at    DateTime        @updatedAt
-   deleted_at    DateTime?
-   FixedExpenses FixedExpenses[]
+   id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name       String
+   deleted    Boolean?
+   created_at DateTime   @default(now())
+   updated_at DateTime   @updatedAt
+   deleted_at DateTime?
+   Expenses   Expenses[]
 
    @@map("categories")
 }
 
-model FixedExpenses {
-   id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   category_id     String    @db.Uuid
-   user_id         String    @db.Uuid
-   monthly_budget  Decimal
-   month           String
-   monthly_expense Decimal?
-   payment_date    DateTime?
-   deleted         Boolean?
-   created_at      DateTime  @default(now())
-   updated_at      DateTime  @updatedAt
-   deleted_at      DateTime?
-   category        Category  @relation(fields: [category_id], references: [id], onDelete: Cascade)
-   user            User      @relation(fields: [user_id], references: [id])
+//model TypePayment {
+//   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   type_payment String
+//   created_at   DateTime
+//   updated_at   DateTime
+//   deleted_at   DateTime
+//   Expenses     Expenses[]
 
-   @@map("fixed_expenses")
+//   @@map("types_payments")
+//}
+
+model Expenses {
+   id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   name         String
+   category_id  String      @db.Uuid
+   user_id      String      @db.Uuid
+   expense      Decimal
+   month        String?
+   payment_date DateTime
+   payment_type PaymentType
+   bank         Bank
+   created_at   DateTime    @default(now())
+   updated_at   DateTime    @updatedAt
+   deleted_at   DateTime?
+   category     Category    @relation(fields: [category_id], references: [id], onDelete: Cascade)
+   user         User        @relation(fields: [user_id], references: [id])
+   //TypePayment  TypePayment @relation(fields: [type_payment_id], references: [id])
+   //Bank            Bank        @relation(fields: [bank_id], references: [id])
+
+   @@map("expenses")
 }
 
-model CardExpenses {
-   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   bank_id       String    @db.Uuid
-   description   String
-   card_type     String
-   date_expense  DateTime
-   value_expense Decimal
-   deleted       Boolean?
-   created_at    DateTime  @default(now())
-   updated_at    DateTime  @updatedAt
-   deleted_at    DateTime?
-   bank          Bank      @relation(fields: [bank_id], references: [id], onDelete: Cascade)
-
-   @@map("card_expenses")
+enum PaymentType {
+   DEBITO
+   CREDITO
+   PIX
+   TED
 }
 
-model Incomes {
-   id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   description   String
-   amount        Float
-   receiver_date DateTime
-   bank_id       String    @db.Uuid
-   deleted       Boolean   @default(false)
-   created_at    DateTime  @default(now())
-   updated_at    DateTime  @default(now()) @updatedAt
-   deleted_at    DateTime?
-   bank          Bank      @relation(fields: [bank_id], references: [id])
-
-   @@map("incomes")
+enum Bank {
+   BRADESCO
+   NUBANK
 }
