@@ -3,8 +3,6 @@ node_modules
 
 prisma/migrations
 
-yarn.lock
-
 dist
 
 logs
@@ -12,4 +10,3 @@ logs
 yarn error.log
 
 yarn.lock
-
