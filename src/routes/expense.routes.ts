@@ -1,13 +1,11 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { Joi, Segments, celebrate } from "celebrate";
 import { ensureAuthenticate } from "../middleware/ensureAuthenticate";
-import { CreateExpenseController } from "../modules/expense/useCase/create/CreateExpenseController";
-import { FindMyExpenseController } from "../modules/expense/useCase/findMy/FindMyExpenseController";
+import { ExpenseController } from "../modules/expense/controller/ExpenseController";
 
 const expenseRoutes = Router();
 
-const createExpenseController = new CreateExpenseController();
-const findMyExpenseCategoryTableController = new FindMyExpenseController();
+const expenseController = new ExpenseController();
 
 expenseRoutes.use(ensureAuthenticate);
 
@@ -29,28 +27,11 @@ expenseRoutes.post(
          allowUnknown: false,
       }
    ),
-   createExpenseController.handle
+   expenseController.create
 );
-
-expenseRoutes.delete(
-   "/",
-   celebrate(
-      {
-         [Segments.BODY]: Joi.object().keys({
-            id: Joi.string().required(),
-         }),
-      },
-      {
-         allowUnknown: false,
-      }
-   ),
-   deleteExpenseCategortyTableController.handle
-);
-
-expenseRoutes.get("/my", findMyExpenseCategoryTableController.handle);
 
 expenseRoutes.get(
-   "/user/:user_id",
+   "/",
    celebrate(
       {
          [Segments.PARAMS]: Joi.object().keys({
@@ -61,46 +42,11 @@ expenseRoutes.get(
          allowUnknown: false,
       }
    ),
-   findUserIdExpenseCategoryTableController.handle
-);
-
-/*expenseRoutes.put(
-   "/",
-   celebrate(
-      {
-         [Segments.BODY]: Joi.object().keys({
-            id: Joi.string().required(),
-            category_id: Joi.string(),
-            monthly_budget: Joi.number(),
-            month: Joi.string(),
-         }),
-      },
-      {
-         allowUnknown: false,
-      }
-   ),
-   updateExpenseCategoryTableController.handle
+   expenseController.findAll
 );
 
 expenseRoutes.put(
-   "/mothly-expense",
-   celebrate(
-      {
-         [Segments.BODY]: Joi.object().keys({
-            id: Joi.string().required(),
-            monthly_expense: Joi.number().required(),
-            payment_date: Joi.date(),
-         }),
-      },
-      {
-         allowUnknown: false,
-      }
-   ),
-   updateMonthlyExpenseExpenseCategoryTableController.handle
-);
-
-expenseRoutes.put(
-   "/payment",
+   "/month",
    celebrate(
       {
          [Segments.BODY]: Joi.object().keys({
@@ -112,7 +58,29 @@ expenseRoutes.put(
          allowUnknown: false,
       }
    ),
-   updatePaymentDateExpenseCategoryTableController.handle
-);*/
+   expenseController.updateMonth
+);
+
+expenseRoutes.put(
+   "/",
+   celebrate(
+      {
+         [Segments.BODY]: Joi.object().keys({
+            id: Joi.string().required(),
+            category_id: Joi.string(),
+            monthly_budget: Joi.number(),
+            month: Joi.string(),
+            bank: Joi.string().valid("Nubank", "Itau", "Bradesco", "Santander"),
+            payment_type: Joi.string().valid("DEBITO", "CREDITO", "PIX", "TED"),
+            payment_date: Joi.date(),
+            expense: Joi.number(),
+         }),
+      },
+      {
+         allowUnknown: false,
+      }
+   ),
+   expenseController.update
+);
 
 export { expenseRoutes };

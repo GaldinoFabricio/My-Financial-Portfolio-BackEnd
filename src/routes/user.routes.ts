@@ -37,7 +37,7 @@ userRoutes.post(
 userRoutes.get("/my", findMyUserController.handle);
 
 userRoutes.get(
-   "/id/:id",
+   "/:id",
    celebrate(
       {
          [Segments.PARAMS]: Joi.object().keys({
