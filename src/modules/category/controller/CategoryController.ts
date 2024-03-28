@@ -3,7 +3,10 @@ import { CategoryService } from "../service/CategoryService";
 import AppError from "../../../shared/errors/AppErrors";
 
 class CategoryController {
-   public async create(req: Request, res: Response): Promise<Response> {
+   public async create(
+      req: Request<any, any, { name: string }>,
+      res: Response
+   ): Promise<Response> {
       const { name } = req.body;
       const categoryService = new CategoryService();
       const verifyCategory = await categoryService.findByName(name);
@@ -21,9 +24,11 @@ class CategoryController {
       return res.status(200).json(categories);
    }
 
-   public async update(req: Request, res: Response): Promise<Response> {
-      const { id } = req.params;
-      const { name } = req.body;
+   public async update(
+      req: Request<any, any, { id: string; name: string }>,
+      res: Response
+   ): Promise<Response> {
+      const { name, id } = req.body;
 
       const categoryService = new CategoryService();
       const checkCategory = await categoryService.findById(id);

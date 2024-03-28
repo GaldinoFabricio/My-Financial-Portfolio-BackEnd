@@ -6,7 +6,6 @@ import "express-async-errors";
 
 import { routes } from "./routes/index.routes";
 import "./database";
-import "./shared/container";
 import AppError from "./shared/errors/AppErrors";
 import Logger from "./shared/logger/Logger";
 import morganMiddleware from "./config/morganMidlware";

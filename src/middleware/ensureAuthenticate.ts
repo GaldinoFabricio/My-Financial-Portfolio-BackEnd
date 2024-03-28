@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import AppError from "../shared/errors/AppErrors";
-import { UserRepository } from "../modules/user/repositore/implemantion/UserRepository";
+import { UserService } from "../modules/user/service/UserService";
 
 interface IPayload {
    sub: string;
@@ -30,9 +30,9 @@ export async function ensureAuthenticate(
          throw new AppError("Token is missing", 401);
       }
 
-      const userRepository = new UserRepository();
+      const userService = new UserService();
 
-      const usersVerify = await userRepository.findId({ id: user_id });
+      const usersVerify = await userService.findId({ id: user_id });
 
       if (!usersVerify) {
          throw new AppError("User not exist", 400);
