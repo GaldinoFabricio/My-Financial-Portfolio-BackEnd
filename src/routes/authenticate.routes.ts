@@ -1,12 +1,10 @@
 import { Router } from "express";
-import { AuthenticateUserController } from "../modules/user/useCase/authenticate/authenticateUserController";
-import { CreateUserController } from "../modules/user/useCase/create/CreateUserController";
 import { Joi, Segments, celebrate } from "celebrate";
+import { UserController } from "../modules/user/controller/UserController";
 
 const authenticateRoutes = Router();
 
-const authenticateUserController = new AuthenticateUserController();
-const createUserController = new CreateUserController();
+const userController = new UserController();
 
 authenticateRoutes.post(
    "/session",
@@ -21,7 +19,7 @@ authenticateRoutes.post(
          allowUnknown: false,
       }
    ),
-   authenticateUserController.handle
+   userController.authenticate
 );
 
 authenticateRoutes.post(
@@ -38,7 +36,7 @@ authenticateRoutes.post(
          allowUnknown: false,
       }
    ),
-   createUserController.handle
+   userController.create
 );
 
 export { authenticateRoutes };
