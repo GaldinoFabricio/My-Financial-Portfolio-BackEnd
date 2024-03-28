@@ -31,6 +31,7 @@ class ExpenseController {
          month,
       } = req.body;
       const user_id = req.user.id;
+
       const expenseService = new ExpenseService();
       const data = await expenseService.create({
          bank,
@@ -42,6 +43,7 @@ class ExpenseController {
          user_id,
          month,
       });
+
       return res.status(201).json(data);
    }
 

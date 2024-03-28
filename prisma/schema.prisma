@@ -166,7 +166,7 @@ model Expenses {
    name         String
    category_id  String      @db.Uuid
    user_id      String      @db.Uuid
-   expense      Decimal
+   expense      Decimal     @db.Decimal(10, 2)
    month        String?
    payment_date DateTime
    payment_type PaymentType

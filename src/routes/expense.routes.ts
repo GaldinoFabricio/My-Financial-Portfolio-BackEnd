@@ -17,9 +17,11 @@ expenseRoutes.post(
             category_id: Joi.string().required(),
             name: Joi.string().required(),
             expense: Joi.number().required(),
-            payment_date: Joi.number().required(),
-            type_payment_id: Joi.number().required(),
-            bank_id: Joi.number().required(),
+            payment_date: Joi.date().required(),
+            payment_type: Joi.string()
+               .valid("DEBITO", "CREDITO", "PIX", "TED")
+               .required(),
+            bank: Joi.string().valid("NUBANK", "BRADESCO").required(),
             month: Joi.string(),
          }),
       },
@@ -70,7 +72,7 @@ expenseRoutes.put(
             category_id: Joi.string(),
             monthly_budget: Joi.number(),
             month: Joi.string(),
-            bank: Joi.string().valid("Nubank", "Itau", "Bradesco", "Santander"),
+            bank: Joi.string().valid("NUBANK", "BRADESCO"),
             payment_type: Joi.string().valid("DEBITO", "CREDITO", "PIX", "TED"),
             payment_date: Joi.date(),
             expense: Joi.number(),
