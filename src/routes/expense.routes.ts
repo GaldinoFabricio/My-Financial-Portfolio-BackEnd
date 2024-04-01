@@ -7,7 +7,7 @@ const expenseRoutes = Router();
 
 const expenseController = new ExpenseController();
 
-expenseRoutes.use(ensureAuthenticate);
+//expenseRoutes.use(ensureAuthenticate);
 
 expenseRoutes.post(
    "/",

@@ -1,5 +1,5 @@
 interface IFindByUserIdExpenseDTO {
-   user_id: string;
+   user_id?: string;
    page: number;
    pageSize: number;
    intial_date: string;

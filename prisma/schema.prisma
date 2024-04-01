@@ -165,7 +165,7 @@ model Expenses {
    id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
    name         String
    category_id  String      @db.Uuid
-   user_id      String      @db.Uuid
+   user_id      String?     @db.Uuid
    expense      Decimal     @db.Decimal(10, 2)
    month        String?
    payment_date DateTime
@@ -175,7 +175,7 @@ model Expenses {
    updated_at   DateTime    @updatedAt
    deleted_at   DateTime?
    category     Category    @relation(fields: [category_id], references: [id], onDelete: Cascade)
-   user         User        @relation(fields: [user_id], references: [id])
+   user         User?       @relation(fields: [user_id], references: [id])
    //TypePayment  TypePayment @relation(fields: [type_payment_id], references: [id])
    //Bank            Bank        @relation(fields: [bank_id], references: [id])
 
