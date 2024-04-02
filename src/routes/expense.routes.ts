@@ -14,7 +14,7 @@ expenseRoutes.post(
    celebrate(
       {
          [Segments.BODY]: Joi.object().keys({
-            category_id: Joi.string().required(),
+            category_id: Joi.string().uuid().required(),
             name: Joi.string().required(),
             expense: Joi.number().required(),
             payment_date: Joi.date().required(),
@@ -23,6 +23,7 @@ expenseRoutes.post(
                .required(),
             bank: Joi.string().valid("NUBANK", "BRADESCO").required(),
             month: Joi.string(),
+            user_id: Joi.string().uuid().required(),
          }),
       },
       {
@@ -32,20 +33,7 @@ expenseRoutes.post(
    expenseController.create
 );
 
-expenseRoutes.get(
-   "/",
-   celebrate(
-      {
-         [Segments.PARAMS]: Joi.object().keys({
-            user_id: Joi.string().required(),
-         }),
-      },
-      {
-         allowUnknown: false,
-      }
-   ),
-   expenseController.findAll
-);
+expenseRoutes.get("/", expenseController.findAll);
 
 expenseRoutes.put(
    "/month",

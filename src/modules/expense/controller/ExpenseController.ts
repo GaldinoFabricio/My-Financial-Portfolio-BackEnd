@@ -17,6 +17,7 @@ class ExpenseController {
             payment_type: PaymentType;
             bank: Bank;
             month?: string;
+            user_id: string;
          }
       >,
       res: Response
@@ -29,8 +30,9 @@ class ExpenseController {
          payment_date,
          payment_type,
          month,
+         user_id,
       } = req.body;
-      const user_id = req.user.id;
+      const { id } = req.user;
 
       const expenseService = new ExpenseService();
       const data = await expenseService.create({
@@ -61,7 +63,7 @@ class ExpenseController {
       >,
       res: Response
    ) {
-      const user_id = req.user.id;
+      //const user_id = req.user.id;
 
       let final_date = endOfMonth(new Date()).toISOString();
       if (req.query.start_date && !isValid(parseISO(req.query.start_date))) {
@@ -69,13 +71,18 @@ class ExpenseController {
       }
 
       let intial_date = startOfMonth(new Date()).toISOString();
+      console.log(req.query.end_date && !isValid(parseISO(req.query.end_date)));
       if (req.query.end_date && !isValid(parseISO(req.query.end_date))) {
          intial_date = req.query.end_date;
       }
-
+      console.log({
+         final_date,
+         intial_date,
+         page: 1,
+         pageSize: 10,
+      });
       const expenseService = new ExpenseService();
       const expenses = await expenseService.findAll({
-         user_id,
          final_date,
          intial_date,
          page: 1,
