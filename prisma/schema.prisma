@@ -19,6 +19,7 @@ model User {
    recommended_stock RecommendedStock[]
    group_role        GroupRole?
    Expenses          Expenses[]
+   SalaryReceipts    SalaryReceipts[]
 
    @@map("users")
 }
@@ -168,7 +169,7 @@ model Expenses {
    user_id      String      @db.Uuid
    expense      Decimal     @db.Decimal(10, 2)
    month        String?
-   payment_date DateTime
+   payment_date DateTime    @db.Date
    payment_type PaymentType
    bank         Bank
    created_at   DateTime    @default(now())
@@ -182,6 +183,22 @@ model Expenses {
    @@map("expenses")
 }
 
+model SalaryReceipts {
+   id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+   user_id            String       @db.Uuid
+   payer              String
+   description        String
+   receipts_type      ReceiptsType
+   hours_value        Decimal?     @db.Decimal(10, 2)
+   number_worked_days Int?
+   total_value        Decimal      @db.Decimal(10, 2)
+   payment_date       DateTime     @db.Date
+   created_at         DateTime     @default(now())
+   user               User         @relation(fields: [user_id], references: [id])
+
+   @@map("salary_receipts")
+}
+
 enum PaymentType {
    DEBITO
    CREDITO
@@ -192,4 +209,10 @@ enum PaymentType {
 enum Bank {
    BRADESCO
    NUBANK
+}
+
+enum ReceiptsType {
+   Servicos
+   Dividendos
+   Outros
 }

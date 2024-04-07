@@ -54,10 +54,9 @@ class ExpenseService implements IExpenseService {
    }> {
       const totalPages = await prismaClient.expenses.count({
          where: {
-            user_id: user_id,
             payment_date: {
-               gte: intial_date ? intial_date : startOfMonth(new Date()),
-               lte: final_date ? final_date : endOfMonth(new Date()),
+               gte: new Date(intial_date),
+               lte: new Date(final_date),
             },
          },
       });
@@ -66,14 +65,13 @@ class ExpenseService implements IExpenseService {
 
       const expense = await prismaClient.expenses.findMany({
          where: {
-            user_id,
             payment_date: {
-               gte: intial_date ? intial_date : startOfMonth(new Date()),
-               lte: final_date ? final_date : endOfMonth(new Date()),
+               gte: new Date(intial_date),
+               lte: new Date(final_date),
             },
          },
-         take: pageSize,
-         skip: offset,
+         /*take: pageSize,
+         skip: offset,*/
       });
 
       return {

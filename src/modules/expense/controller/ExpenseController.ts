@@ -32,7 +32,6 @@ class ExpenseController {
          month,
          user_id,
       } = req.body;
-      const { id } = req.user;
 
       const expenseService = new ExpenseService();
       const data = await expenseService.create({
@@ -66,21 +65,15 @@ class ExpenseController {
       //const user_id = req.user.id;
 
       let final_date = endOfMonth(new Date()).toISOString();
-      if (req.query.start_date && !isValid(parseISO(req.query.start_date))) {
-         final_date = req.query.start_date;
+      if (req.query.end_date && !isValid(req.query.end_date)) {
+         final_date = req.query.end_date;
       }
 
       let intial_date = startOfMonth(new Date()).toISOString();
-      console.log(req.query.end_date && !isValid(parseISO(req.query.end_date)));
-      if (req.query.end_date && !isValid(parseISO(req.query.end_date))) {
-         intial_date = req.query.end_date;
+      if (req.query.start_date && !isValid(req.query.start_date)) {
+         intial_date = req.query.start_date;
       }
-      console.log({
-         final_date,
-         intial_date,
-         page: 1,
-         pageSize: 10,
-      });
+
       const expenseService = new ExpenseService();
       const expenses = await expenseService.findAll({
          final_date,
@@ -88,6 +81,7 @@ class ExpenseController {
          page: 1,
          pageSize: 10,
       });
+
       return res.status(200).json(expenses);
    }
 
