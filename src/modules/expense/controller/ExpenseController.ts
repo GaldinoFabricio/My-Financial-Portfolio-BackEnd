@@ -85,6 +85,38 @@ class ExpenseController {
       return res.status(200).json(expenses);
    }
 
+   async findCategoryExpenseSum(
+      request: Request<
+         any,
+         any,
+         any,
+         {
+            start_date?: string;
+            end_date?: string;
+         }
+      >,
+      response: Response
+   ): Promise<Response> {
+      let final_date = endOfMonth(new Date()).toISOString();
+      if (request.query.end_date && !isValid(request.query.end_date)) {
+         final_date = request.query.end_date;
+      }
+
+      let intial_date = startOfMonth(new Date()).toISOString();
+      if (request.query.start_date && !isValid(request.query.start_date)) {
+         intial_date = request.query.start_date;
+      }
+
+      const expenseService = new ExpenseService();
+      const data = await expenseService.findCategoryExpenseSum(
+         "",
+         intial_date,
+         final_date
+      );
+
+      return response.status(200).json(data);
+   }
+
    public async findById(req: Request, res: Response) {
       const { id } = req.params;
       const expenseService = new ExpenseService();

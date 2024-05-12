@@ -10,7 +10,7 @@ class SalaryReceiptService implements ISalaryReceiptService {
       return await prismaClient.salaryReceipts.create({
          data: {
             user_id: data.user_id,
-            description: data.descrition,
+            description: data.description,
             payment_date: data.payment_date,
             receipts_type: data.payment_type,
             hours_value: data.hours_value,

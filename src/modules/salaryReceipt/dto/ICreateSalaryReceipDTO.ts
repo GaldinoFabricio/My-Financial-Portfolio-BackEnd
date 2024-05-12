@@ -3,7 +3,7 @@ import { ReceiptsType } from "@prisma/client";
 interface ICreateSalaryReceiptDTO {
    user_id: string;
    payer: string;
-   descrition: string;
+   description: string;
    payment_date: Date;
    payment_type: ReceiptsType;
    hours_value?: number;

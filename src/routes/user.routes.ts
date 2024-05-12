@@ -25,8 +25,6 @@ userRoutes.post(
    userController.create
 );
 
-userRoutes.get("/my", userController.findMy);
-
 userRoutes.get(
    "/:id",
    celebrate(
@@ -41,6 +39,8 @@ userRoutes.get(
    ),
    userController.findId
 );
+
+userRoutes.get("/", userController.findMy);
 
 userRoutes.put(
    "/password",

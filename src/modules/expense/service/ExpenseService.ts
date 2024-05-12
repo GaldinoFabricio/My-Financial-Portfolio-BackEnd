@@ -80,6 +80,31 @@ class ExpenseService implements IExpenseService {
       };
    }
 
+   async findCategoryExpenseSum(
+      user_id: string,
+      initial: string,
+      final: string
+   ): Promise<
+      {
+         name: string;
+         total_expense: number;
+      }[]
+   > {
+      return await prismaClient.$queryRaw<
+         {
+            name: string;
+            total_expense: number;
+         }[]
+      >`
+         SELECT categories.name, SUM(expense) AS total_expense
+         FROM expenses
+         INNER JOIN categories ON expenses.category_id = categories.id
+         WHERE payment_date BETWEEN ${new Date(initial)} AND ${new Date(final)}
+         AND expenses.category_id != '27d0a7d5-2ec5-4820-aa14-06a92b219315'
+         GROUP BY category_id, categories.name;
+      `;
+   }
+
    async update(input: IUpdateExpenseDTO): Promise<Expenses> {
       return await prismaClient.expenses.update({
          data: input,

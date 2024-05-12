@@ -25,7 +25,7 @@ export async function ensureAuthenticate(
          token,
          `${process.env.KEY_TOKEN}`
       ) as IPayload;
-
+      console.log(user_id);
       if (!user_id) {
          throw new AppError("Token is missing", 401);
       }

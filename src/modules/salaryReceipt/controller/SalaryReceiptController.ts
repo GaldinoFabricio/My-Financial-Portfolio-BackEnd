@@ -11,7 +11,7 @@ class SalaryReceiptController {
          {
             user_id: string;
             payer: string;
-            descrition: string;
+            description: string;
             payment_date: Date;
             payment_type: ReceiptsType;
             hours_value?: number;
@@ -24,7 +24,7 @@ class SalaryReceiptController {
       const {
          user_id,
          payer,
-         descrition,
+         description,
          payment_date,
          payment_type,
          hours_value,
@@ -36,7 +36,7 @@ class SalaryReceiptController {
       await salaryReceiptService.create({
          user_id,
          payer,
-         descrition,
+         description,
          payment_date,
          payment_type,
          hours_value,
@@ -78,8 +78,8 @@ class SalaryReceiptController {
       const salaryReceipts = await salaryReceiptService.findAll({
          final_date,
          initial_date,
-         page: page.toString(),
-         pageSize: pageSize.toString(),
+         page: `${page}`,
+         pageSize: `${pageSize}`,
       });
 
       return response.json(salaryReceipts);

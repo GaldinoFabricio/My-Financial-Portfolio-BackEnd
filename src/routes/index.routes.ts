@@ -7,7 +7,7 @@ import { salaryReceiptRoutes } from "./salaryReceipt.routes";
 
 const routes = Router();
 
-routes.use("/users", userRoutes);
+routes.use("/user", userRoutes);
 routes.use("/expense", expenseRoutes);
 routes.use("/category", categoryRoutes);
 routes.use("/salary", salaryReceiptRoutes);

@@ -7,7 +7,7 @@ const expenseRoutes = Router();
 
 const expenseController = new ExpenseController();
 
-//expenseRoutes.use(ensureAuthenticate);
+expenseRoutes.use(ensureAuthenticate);
 
 expenseRoutes.post(
    "/",
@@ -32,6 +32,8 @@ expenseRoutes.post(
    ),
    expenseController.create
 );
+
+expenseRoutes.get("/resume", expenseController.findCategoryExpenseSum);
 
 expenseRoutes.get("/", expenseController.findAll);
 
