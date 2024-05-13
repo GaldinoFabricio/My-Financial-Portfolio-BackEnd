@@ -226,18 +226,18 @@
             }
          }
       },
-      "/movie/create": {
+      "/expense/create": {
          "post": {
-            "summary": "Cadastro de filmes",
+            "summary": "Criação de despesas",
             "description": "Retorna o filme cadastrado",
-            "tags": ["movies"],
+            "tags": ["expenses"],
             "security": [{ "bearerAuth": [] }],
             "requestBody": {
-               "description": "Create a new movie",
+               "description": "Create a new expense",
                "content": {
                   "application/json": {
                      "schema": {
-                        "$ref": "#/components/schemas/Movie"
+                        "$ref": "#/components/schemas/Expense"
                      }
                   }
                },
@@ -245,18 +245,30 @@
             },
             "responses": {
                "201": {
-                  "description": "Lista de filmes",
+                  "description": "Create a new expense",
                   "content": {
                      "application/json": {
                         "schema": {
                            "type": "object",
-                           "$ref": "#/components/schemas/Movie"
+                           "$ref": "#/components/schemas/Expense"
                         }
                      }
                   }
                },
                "400": {
-                  "description": "Erro na requisição"
+                  "description": "Error in request",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {
+                              "message": {
+                                 "type": "string"
+                              }
+                           }
+                        }
+                     }
+                  }
                },
                "500": {
                   "description": "Erro interno do servidor"
@@ -264,18 +276,18 @@
             }
          }
       },
-      "/movie/update": {
+      "/expense/update": {
          "put": {
-            "summary": "Update de filmes",
-            "description": "Retorna o filme atualizado",
-            "tags": ["movies"],
+            "summary": "Update expense",
+            "description": "Return expense updated",
+            "tags": ["expenses"],
             "security": [{ "bearerAuth": [] }],
             "requestBody": {
-               "description": "Update a movie",
+               "description": "Return expense updated",
                "content": {
                   "application/json": {
                      "schema": {
-                        "$ref": "#/components/schemas/Movie"
+                        "$ref": "#/components/schemas/Expense"
                      }
                   }
                },
@@ -283,18 +295,30 @@
             },
             "responses": {
                "201": {
-                  "description": "Lista de filmes",
+                  "description": "Return expense updated",
                   "content": {
                      "application/json": {
                         "schema": {
                            "type": "object",
-                           "$ref": "#/components/schemas/Movie"
+                           "$ref": "#/components/schemas/Expense"
                         }
                      }
                   }
                },
                "400": {
-                  "description": "Erro na requisição"
+                  "description": "Error in request",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {
+                              "message": {
+                                 "type": "string"
+                              }
+                           }
+                        }
+                     }
+                  }
                },
                "500": {
                   "description": "Erro interno do servidor"
@@ -302,28 +326,41 @@
             }
          }
       },
-      "/movie": {
+      "/expense/": {
          "get": {
-            "summary": "Lista de filmes",
-            "description": "Retorna a lista de filmes",
-            "tags": ["movies"],
+            "summary": "Return list of expenses by user logged in the month",
+            "description": "Return list of expenses by user logged in the month",
+            "tags": ["expenses"],
+            "security": [{ "bearerAuth": [] }],
             "responses": {
                "200": {
-                  "description": "Lista de filmes",
+                  "description": "Return list of expenses by user logged in the month",
                   "content": {
                      "application/json": {
                         "schema": {
                            "type": "array",
                            "items": {
                               "type": "object",
-                              "$ref": "#/components/schemas/Movie"
+                              "$ref": "#/components/schemas/Expense"
                            }
                         }
                      }
                   }
                },
                "400": {
-                  "description": "Erro na requisição"
+                  "description": "Error in request",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {
+                              "message": {
+                                 "type": "string"
+                              }
+                           }
+                        }
+                     }
+                  }
                },
                "500": {
                   "description": "Erro interno do servidor"
@@ -363,34 +400,65 @@
                }
             }
          },
-         "MovieType": {
+         "Category": {
             "type": "object",
             "properties": {
-               "SERIES": {
+               "id": {
                   "type": "string"
                },
-               "MOVIE": {
-                  "type": "string"
-               },
-               "DOCUMENTARY": {
+               "name": {
                   "type": "string"
                }
             }
          },
-         "Movie": {
+         "PaymentType": {
             "type": "object",
             "properties": {
-               "title": {
+               "DEBITO": {
                   "type": "string"
                },
-               "movie_type": {
-                  "$ref": "#/components/schemas/MovieType"
-               },
-               "description": {
+               "CREDITO": {
                   "type": "string"
+               },
+               "PIX": {
+                  "type": "string"
+               },
+               "TED": {
+                  "type": "string"
+               }
+            }
+         },
+         "Expense": {
+            "type": "object",
+            "properties": {
+               "name": {
+                  "type": "string"
+               },
+               "category_id": {
+                  "$ref": "#/components/schemas/Category"
+               },
+               "user_id": {
+                  "$ref": "#/components/schemas/User"
                },
                "id": {
                   "type": "string"
+               },
+               "expense": {
+                  "type": "number"
+               },
+               "month": {
+                  "type": "number"
+               },
+               "payment_date": {
+                  "type": "string",
+                  "format": "date-time"
+               },
+               "payment_type": {
+                  "$ref": "#/components/schemas/PaymentType"
+               },
+               "created_at": {
+                  "type": "string",
+                  "format": "date-time"
                }
             }
          }

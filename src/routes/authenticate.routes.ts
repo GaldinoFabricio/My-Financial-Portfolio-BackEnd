@@ -7,7 +7,7 @@ const authenticateRoutes = Router();
 const userController = new UserController();
 
 authenticateRoutes.post(
-   "/session",
+   "/login",
    celebrate(
       {
          [Segments.BODY]: Joi.object().keys({
