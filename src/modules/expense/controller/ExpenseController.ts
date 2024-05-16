@@ -48,7 +48,7 @@ class ExpenseController {
       return res.status(201).json(data);
    }
 
-   public async findAll(
+   async findAll(
       req: Request<
          any,
          any,
@@ -117,15 +117,15 @@ class ExpenseController {
       return response.status(200).json(data);
    }
 
-   public async findById(req: Request, res: Response) {
+   async findById(req: Request, res: Response) {
       const { id } = req.params;
       const expenseService = new ExpenseService();
       const expense = await expenseService.findById(id);
       return res.status(200).json(expense);
    }
 
-   public async findByBank(
-      req: Request<
+   async findByBank(
+      request: Request<
          any,
          any,
          any,
@@ -134,20 +134,20 @@ class ExpenseController {
             month?: string;
          }
       >,
-      res: Response
+      response: Response
    ) {
-      const { bank, month } = req.body;
-      const user_id = req.user.id;
+      const { bank, month } = request.body;
+      const user_id = request.user.id;
       const expenseService = new ExpenseService();
       const expenses = await expenseService.findByBank({
          user_id,
          bank,
          month,
       });
-      return res.status(200).json(expenses);
+      return response.status(200).json(expenses);
    }
 
-   public async update(
+   async update(
       req: Request<
          any,
          any,
