@@ -4,6 +4,7 @@ import { ICreateSalaryReceiptDTO } from "../dto/ICreateSalaryReceipDTO";
 import { ISalaryReceiptService } from "./ISalaryReceiptService";
 import { prismaClient } from "../../../database";
 import { IFindUserIdSalaryReceiptDTO } from "../dto/IFindUserIdSalaryReceiptDTO";
+import { IUpdateSalaryReceiptDTO } from "../dto/IUpdateSalarayReceiptDTO";
 
 class SalaryReceiptService implements ISalaryReceiptService {
    async create(data: ICreateSalaryReceiptDTO): Promise<SalaryReceipts> {
@@ -34,6 +35,31 @@ class SalaryReceiptService implements ISalaryReceiptService {
          },
          /*take: parseInt(input.pageSize),
          skip: (parseInt(input.page) - 1) * parseInt(input.pageSize),*/
+      });
+   }
+
+   async update({
+      id,
+      description,
+      hours_value,
+      number_worked_days,
+      payer,
+      payment_date,
+      payment_type,
+   }: IUpdateSalaryReceiptDTO): Promise<SalaryReceipts> {
+      return await prismaClient.salaryReceipts.update({
+         where: {
+            id: id,
+         },
+         data: {
+            description,
+            payment_date,
+            receipts_type: payment_type as $Enums.ReceiptsType,
+            hours_value,
+            number_worked_days,
+            total_value: Number(hours_value) * Number(number_worked_days),
+            payer,
+         },
       });
    }
 }
